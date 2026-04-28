@@ -1,0 +1,18 @@
+## Build results
+bin/
+obj/
+publish/
+
+## IDE
+.vs/
+.vscode/
+*.user
+*.sln.iml
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Local files (don't commit secrets)
+*.log
+*.json

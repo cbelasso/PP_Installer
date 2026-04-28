@@ -1,0 +1,51 @@
+name: Build Installer EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore src/InstallerWrapper.csproj
+
+    - name: Build Release
+      run: dotnet build src/InstallerWrapper.csproj -c Release --no-restore
+
+    - name: Publish Release Build
+      run: dotnet publish src/InstallerWrapper.csproj -c Release -o bin/Release/publish
+
+    - name: Copy PowerShell script to output
+      run: |
+        Copy-Item -Path "proxy_installer.ps1" -Destination "bin/Release/publish/proxy_installer.ps1" -Force
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: PracticePerfect-Installer
+        path: |
+          bin/Release/publish/PracticePerfect-Installer.exe
+          bin/Release/publish/proxy_installer.ps1
+        retention-days: 90
+
+    - name: Create Release (optional - on tag)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          bin/Release/publish/PracticePerfect-Installer.exe
+          bin/Release/publish/proxy_installer.ps1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
