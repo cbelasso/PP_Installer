@@ -2,34 +2,32 @@ name: Build Installer EXE
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Setup .NET 8
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Restore dependencies
-      run: dotnet restore src/InstallerWrapper.csproj
+      - name: Restore
+        run: dotnet restore src/InstallerWrapper.csproj
 
-    - name: Build Release
-      run: dotnet build src/InstallerWrapper.csproj -c Release --no-restore
+      - name: Build
+        run: dotnet build src/InstallerWrapper.csproj -c Release --no-restore
 
-    - name: Publish Release Build
-      run: dotnet publish src/InstallerWrapper.csproj -c Release -o bin/Release/publish
+      - name: Publish
+        run: dotnet publish src/InstallerWrapper.csproj -c Release -o bin/Release/publish
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: PracticePerfect-Installer
-        path: bin/Release/publish/
-        retention-days: 90
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: PracticePerfect-Installer
+          path: bin/Release/publish/
