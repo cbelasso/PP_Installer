@@ -31,17 +31,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: PracticePerfect-Installer
-        path: |
-          bin/Release/publish/PracticePerfect-Installer.exe
-          bin/Release/publish/proxy_installer.ps1
+        path: bin/Release/publish/
         retention-days: 90
-
-    - name: Create Release (optional - on tag)
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          bin/Release/publish/PracticePerfect-Installer.exe
-          bin/Release/publish/proxy_installer.ps1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
