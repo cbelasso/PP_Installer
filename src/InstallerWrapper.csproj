@@ -21,8 +21,9 @@
 
   <!-- Bundle the PowerShell script in the output directory -->
   <ItemGroup>
-    <None Update="../proxy_installer.ps1">
+    <None Include="../proxy_installer.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>proxy_installer.ps1</Link>
     </None>
   </ItemGroup>
 

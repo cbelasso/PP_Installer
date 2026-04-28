@@ -27,10 +27,6 @@ jobs:
     - name: Publish Release Build
       run: dotnet publish src/InstallerWrapper.csproj -c Release -o bin/Release/publish
 
-    - name: Copy PowerShell script to output
-      run: |
-        Copy-Item -Path "proxy_installer.ps1" -Destination "bin/Release/publish/proxy_installer.ps1" -Force
-
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
